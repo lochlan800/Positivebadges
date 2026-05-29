@@ -1,4 +1,4 @@
-const CACHE = 'positive-badges-v1';
+const CACHE = 'positive-badges-v2';
 const ASSETS = [
   '/',
   '/index.html',
