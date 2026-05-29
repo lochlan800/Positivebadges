@@ -20,6 +20,7 @@ const hintDismiss      = document.getElementById('hint-dismiss');
 // Genre select + search
 const genreSelect      = document.getElementById('genre-select');
 const searchInput      = document.getElementById('search-input');
+const searchSuggestions = document.getElementById('search-suggestions');
 
 // FAB
 const fabAddBadge      = document.getElementById('fab-add-badge');
@@ -157,13 +158,88 @@ function escapeAttr(str) {
 genreSelect.addEventListener('change', () => {
   currentGenre = genreSelect.value;
   renderBadges();
+  renderSuggestions();
 });
 
 // ─── Search ──────────────────────────────────────────────
 searchInput.addEventListener('input', () => {
   currentSearch = searchInput.value.trim();
   renderBadges();
+  renderSuggestions();
 });
+
+searchInput.addEventListener('focus', renderSuggestions);
+
+// Hide the dropdown when clicking anywhere outside the search area
+document.addEventListener('click', e => {
+  if (!e.target.closest('.search-section-inner')) {
+    hideSuggestions();
+  }
+});
+
+// Close the dropdown on Escape
+searchInput.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    hideSuggestions();
+    searchInput.blur();
+  }
+});
+
+// ─── Search suggestions dropdown ─────────────────────────
+function matchingBadges() {
+  const term = currentSearch.toLowerCase();
+  return badges.filter(b => {
+    const matchesGenre = currentGenre === 'All' || b.genre === currentGenre;
+    const matchesSearch = !term ||
+      b.title.toLowerCase().includes(term) ||
+      b.genre.toLowerCase().includes(term);
+    return matchesGenre && matchesSearch;
+  });
+}
+
+function hideSuggestions() {
+  searchSuggestions.hidden = true;
+  searchInput.setAttribute('aria-expanded', 'false');
+}
+
+function renderSuggestions() {
+  // Only show the dropdown once the user has typed something
+  if (!currentSearch) {
+    hideSuggestions();
+    return;
+  }
+
+  const results = matchingBadges();
+  searchSuggestions.innerHTML = '';
+
+  if (results.length === 0) {
+    const li = document.createElement('li');
+    li.className = 'search-suggestion-empty';
+    li.textContent = `No badges match "${currentSearch}"`;
+    searchSuggestions.appendChild(li);
+  } else {
+    results.forEach(badge => {
+      const li = document.createElement('li');
+      li.className = 'search-suggestion';
+      li.setAttribute('role', 'option');
+      li.innerHTML = `
+        <img class="search-suggestion-thumb" src="${escapeAttr(badge.src)}" alt="" />
+        <div class="search-suggestion-text">
+          <div class="search-suggestion-title">${escapeHTML(badge.title)}</div>
+          <div class="search-suggestion-genre">${escapeHTML(badge.genre)}</div>
+        </div>
+      `;
+      li.addEventListener('click', () => {
+        hideSuggestions();
+        openDetailModal(badge.id);
+      });
+      searchSuggestions.appendChild(li);
+    });
+  }
+
+  searchSuggestions.hidden = false;
+  searchInput.setAttribute('aria-expanded', 'true');
+}
 
 // ─── Modal helpers ───────────────────────────────────────
 function openModal(modal) {

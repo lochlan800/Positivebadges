@@ -63,8 +63,12 @@
           placeholder="Search your badges…"
           aria-label="Search badges"
           autocomplete="off"
+          role="combobox"
+          aria-expanded="false"
+          aria-controls="search-suggestions"
         />
       </div>
+      <ul id="search-suggestions" class="search-suggestions" role="listbox" hidden></ul>
     </div>
   </section>
 
