@@ -15,28 +15,8 @@
         <span class="header-icon">🏅</span>
         <h1 class="header-title">Positive Badges</h1>
       </div>
-      <button class="btn-settings" id="btn-open-settings" aria-label="Settings">
-        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <circle cx="12" cy="12" r="3"></circle>
-          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0
-            0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65
-            1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65
-            1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0
-            0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0
-            1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2
-            2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1
-            0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-        </svg>
-      </button>
     </div>
   </header>
-
-  <!-- Welcome hint banner -->
-  <div class="hint-banner" id="hint-banner" hidden>
-    <span>💡 Add your OpenAI key in <strong>Settings</strong> to generate badges with AI</span>
-    <button class="hint-dismiss" id="hint-dismiss" aria-label="Dismiss">✕</button>
-  </div>
 
   <!-- Search bar with built-in genre filter -->
   <section class="search-section">
@@ -115,7 +95,7 @@
       </div>
       <div class="modal-body">
 
-        <!-- Step 1: Genre -->
+        <!-- Genre -->
         <div class="form-group">
           <label class="form-label" for="badge-genre">Genre</label>
           <select class="form-select" id="badge-genre">
@@ -127,7 +107,7 @@
           </select>
         </div>
 
-        <!-- Step 2: Badge name -->
+        <!-- Badge name -->
         <div class="form-group">
           <label class="form-label" for="badge-title">Badge Name</label>
           <input
@@ -140,7 +120,7 @@
           <p class="form-hint">This is the name that appears on the badge and in search.</p>
         </div>
 
-        <!-- Step 3: Style notes (optional) -->
+        <!-- Style notes -->
         <div class="form-group">
           <label class="form-label" for="badge-desc">Style notes <span class="label-optional">(optional)</span></label>
           <input
@@ -150,6 +130,19 @@
             placeholder="e.g. Blue and gold colours, star motif"
             maxlength="200"
           />
+        </div>
+
+        <!-- OpenAI API key (inline) -->
+        <div class="form-group">
+          <label class="form-label" for="api-key-input">OpenAI API Key <span class="label-optional">(for AI generation)</span></label>
+          <input
+            class="form-input"
+            type="password"
+            id="api-key-input"
+            placeholder="sk-..."
+            autocomplete="off"
+          />
+          <p class="form-hint">Saved in your browser. Only needed for "Generate with AI".</p>
         </div>
 
         <!-- Generate button -->
@@ -175,7 +168,7 @@
           <input type="file" id="badge-upload" accept="image/*" class="sr-only" />
         </div>
 
-        <!-- Preview area (hidden until image ready) -->
+        <!-- Preview area -->
         <div class="preview-area" id="preview-area" hidden>
           <h3 class="preview-label">Preview</h3>
           <div class="preview-img-wrap">
@@ -187,33 +180,6 @@
           </div>
         </div>
 
-      </div>
-    </div>
-  </div>
-
-  <!-- ===== MODAL: Settings ===== -->
-  <div class="modal-overlay" id="modal-settings" role="dialog" aria-modal="true" aria-labelledby="settings-title" hidden>
-    <div class="modal-card modal-card--sm">
-      <div class="modal-header">
-        <h2 class="modal-title" id="settings-title">Settings</h2>
-        <button class="modal-close" id="close-settings" aria-label="Close">✕</button>
-      </div>
-      <div class="modal-body">
-        <div class="form-group">
-          <label class="form-label" for="api-key-input">OpenAI API Key</label>
-          <input
-            class="form-input"
-            type="password"
-            id="api-key-input"
-            placeholder="sk-..."
-            autocomplete="off"
-          />
-          <p class="form-hint">Your key is stored only in your browser's localStorage and never sent anywhere except OpenAI.</p>
-        </div>
-        <div class="settings-actions">
-          <button class="btn btn-primary" id="btn-save-settings">Save Key</button>
-          <button class="btn btn-danger" id="btn-clear-settings">Clear Key</button>
-        </div>
       </div>
     </div>
   </div>
@@ -238,8 +204,6 @@
       </div>
     </div>
   </div>
-
-  <!-- Toast container (injected by JS) -->
 
   <script src="app.js"></script>
 </body>

@@ -14,8 +14,6 @@ let activeBadgeId = null;    // id of the badge currently shown in the detail mo
 // ─── DOM refs ─────────────────────────────────────────────
 const badgeGrid        = document.getElementById('badge-grid');
 const emptyState       = document.getElementById('empty-state');
-const hintBanner       = document.getElementById('hint-banner');
-const hintDismiss      = document.getElementById('hint-dismiss');
 
 // Genre picker
 const genreBtn         = document.getElementById('genre-btn');
@@ -46,13 +44,8 @@ const previewImg       = document.getElementById('preview-img');
 const btnDownloadPreview = document.getElementById('btn-download-preview');
 const btnAddToCollection = document.getElementById('btn-add-to-collection');
 
-// Settings modal
-const modalSettings    = document.getElementById('modal-settings');
-const btnOpenSettings  = document.getElementById('btn-open-settings');
-const closeSettings    = document.getElementById('close-settings');
+// API key (inline in add-badge modal)
 const apiKeyInput      = document.getElementById('api-key-input');
-const btnSaveSettings  = document.getElementById('btn-save-settings');
-const btnClearSettings = document.getElementById('btn-clear-settings');
 
 // Detail modal
 const modalBadgeDetail = document.getElementById('modal-badge-detail');
@@ -275,7 +268,7 @@ function closeModal(modal) {
 }
 
 // Close modal on overlay click
-[modalAddBadge, modalSettings, modalBadgeDetail].forEach(modal => {
+[modalAddBadge, modalBadgeDetail].forEach(modal => {
   modal.addEventListener('click', e => {
     if (e.target === modal) closeModal(modal);
   });
@@ -284,7 +277,7 @@ function closeModal(modal) {
 // Close on Escape
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
-    [modalAddBadge, modalSettings, modalBadgeDetail].forEach(m => {
+    [modalAddBadge, modalBadgeDetail].forEach(m => {
       if (!m.hidden) closeModal(m);
     });
   }
@@ -295,10 +288,10 @@ fabAddBadge.addEventListener('click', openAddBadgeModal);
 closeAddBadge.addEventListener('click', () => closeModal(modalAddBadge));
 
 function openAddBadgeModal() {
-  // Reset form
   badgeGenre.value = 'Running';
   badgeTitle.value = '';
   badgeDesc.value  = '';
+  apiKeyInput.value = getApiKey();
   pendingImageSrc  = null;
   previewArea.hidden = true;
   previewImg.src = '';
@@ -325,7 +318,8 @@ btnGenerate.addEventListener('click', async () => {
   const title = badgeTitle.value.trim();
   const genre = badgeGenre.value;
   const desc  = badgeDesc.value.trim();
-  const apiKey = getApiKey();
+  const apiKey = apiKeyInput.value.trim();
+  if (apiKey) setApiKey(apiKey);
 
   if (!title) {
     showToast('Please describe your achievement first.');
@@ -435,29 +429,6 @@ btnAddToCollection.addEventListener('click', () => {
   showToast(`"${title}" added to your collection!`);
 });
 
-// ─── Settings modal ──────────────────────────────────────
-btnOpenSettings.addEventListener('click', openSettingsModal);
-closeSettings.addEventListener('click', () => closeModal(modalSettings));
-
-function openSettingsModal() {
-  apiKeyInput.value = getApiKey();
-  openModal(modalSettings);
-}
-
-btnSaveSettings.addEventListener('click', () => {
-  const key = apiKeyInput.value.trim();
-  setApiKey(key);
-  closeModal(modalSettings);
-  showToast(key ? 'API key saved!' : 'API key cleared.');
-  updateHintBanner();
-});
-
-btnClearSettings.addEventListener('click', () => {
-  apiKeyInput.value = '';
-  setApiKey('');
-  showToast('API key cleared.');
-  updateHintBanner();
-});
 
 // ─── Badge Detail modal ──────────────────────────────────
 closeBadgeDetail.addEventListener('click', () => closeModal(modalBadgeDetail));
@@ -492,20 +463,8 @@ btnDeleteBadge.addEventListener('click', () => {
   activeBadgeId = null;
 });
 
-// ─── Hint banner ─────────────────────────────────────────
-function updateHintBanner() {
-  const dismissed = sessionStorage.getItem('hintDismissed') === 'true';
-  hintBanner.hidden = !!getApiKey() || dismissed;
-}
-
-hintDismiss.addEventListener('click', () => {
-  hintBanner.hidden = true;
-  sessionStorage.setItem('hintDismissed', 'true');
-});
-
 // ─── Init ────────────────────────────────────────────────
 (function init() {
   loadBadges();
   renderBadges();
-  updateHintBanner();
 })();
