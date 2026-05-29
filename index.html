@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Positive Badges</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="header-brand">
+        <span class="header-icon">🏅</span>
+        <h1 class="header-title">Positive Badges</h1>
+      </div>
+      <button class="btn-settings" id="btn-open-settings" aria-label="Settings">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"></circle>
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0
+            0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65
+            1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65
+            1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0
+            0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0
+            1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2
+            2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1
+            0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Welcome hint banner -->
+  <div class="hint-banner" id="hint-banner" hidden>
+    <span>💡 Add your OpenAI key in <strong>Settings</strong> to generate badges with AI</span>
+    <button class="hint-dismiss" id="hint-dismiss" aria-label="Dismiss">✕</button>
+  </div>
+
+  <!-- Genre navigation -->
+  <nav class="genre-nav" aria-label="Badge genres">
+    <div class="genre-nav-inner">
+      <button class="genre-btn active" data-genre="All">All</button>
+      <button class="genre-btn" data-genre="Running">Running</button>
+      <button class="genre-btn" data-genre="Skills">Skills</button>
+      <button class="genre-btn" data-genre="Learning">Learning</button>
+      <button class="genre-btn" data-genre="School">School</button>
+      <button class="genre-btn" data-genre="Custom">Custom</button>
+    </div>
+  </nav>
+
+  <!-- Main content -->
+  <main class="main-content">
+    <div class="badge-grid" id="badge-grid" role="list" aria-label="Badge collection"></div>
+    <div class="empty-state" id="empty-state" hidden>
+      <div class="empty-icon">🏅</div>
+      <p class="empty-title">No badges yet</p>
+      <p class="empty-sub">Press the <strong>+</strong> button to add your first achievement!</p>
+    </div>
+  </main>
+
+  <!-- FAB: Add Badge -->
+  <button class="fab" id="fab-add-badge" aria-label="Add badge">
+    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="12" y1="5" x2="12" y2="19"></line>
+      <line x1="5" y1="12" x2="19" y2="12"></line>
+    </svg>
+  </button>
+
+  <!-- ===== MODAL: Add Badge ===== -->
+  <div class="modal-overlay" id="modal-add-badge" role="dialog" aria-modal="true" aria-labelledby="add-badge-title" hidden>
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 class="modal-title" id="add-badge-title">Add New Badge</h2>
+        <button class="modal-close" id="close-add-badge" aria-label="Close">✕</button>
+      </div>
+      <div class="modal-body">
+
+        <!-- Step 1: Genre -->
+        <div class="form-group">
+          <label class="form-label" for="badge-genre">Genre</label>
+          <select class="form-select" id="badge-genre">
+            <option value="Running">Running</option>
+            <option value="Skills">Skills</option>
+            <option value="Learning">Learning</option>
+            <option value="School">School</option>
+            <option value="Custom">Custom</option>
+          </select>
+        </div>
+
+        <!-- Step 2: Achievement title -->
+        <div class="form-group">
+          <label class="form-label" for="badge-title">What did you achieve?</label>
+          <input
+            class="form-input"
+            type="text"
+            id="badge-title"
+            placeholder="e.g. Ran 5km without stopping"
+            maxlength="120"
+          />
+        </div>
+
+        <!-- Step 3: Style notes (optional) -->
+        <div class="form-group">
+          <label class="form-label" for="badge-desc">Style notes <span class="label-optional">(optional)</span></label>
+          <input
+            class="form-input"
+            type="text"
+            id="badge-desc"
+            placeholder="e.g. Blue and gold colours, star motif"
+            maxlength="200"
+          />
+        </div>
+
+        <!-- Generate button -->
+        <button class="btn btn-primary btn-block" id="btn-generate">
+          <span id="generate-btn-text">✨ Generate with AI</span>
+          <span class="spinner" id="generate-spinner" hidden></span>
+        </button>
+
+        <!-- Divider -->
+        <div class="divider"><span>or</span></div>
+
+        <!-- Upload own image -->
+        <div class="upload-area" id="upload-area">
+          <label for="badge-upload" class="upload-label">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="16 16 12 12 8 16"></polyline>
+              <line x1="12" y1="12" x2="12" y2="21"></line>
+              <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"></path>
+            </svg>
+            Upload your own image
+          </label>
+          <input type="file" id="badge-upload" accept="image/*" class="sr-only" />
+        </div>
+
+        <!-- Preview area (hidden until image ready) -->
+        <div class="preview-area" id="preview-area" hidden>
+          <h3 class="preview-label">Preview</h3>
+          <div class="preview-img-wrap">
+            <img id="preview-img" src="" alt="Badge preview" class="preview-img" />
+          </div>
+          <div class="preview-actions">
+            <a class="btn btn-secondary" id="btn-download-preview" download="badge.png">⬇ Download</a>
+            <button class="btn btn-primary" id="btn-add-to-collection">Add to Collection</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MODAL: Settings ===== -->
+  <div class="modal-overlay" id="modal-settings" role="dialog" aria-modal="true" aria-labelledby="settings-title" hidden>
+    <div class="modal-card modal-card--sm">
+      <div class="modal-header">
+        <h2 class="modal-title" id="settings-title">Settings</h2>
+        <button class="modal-close" id="close-settings" aria-label="Close">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label" for="api-key-input">OpenAI API Key</label>
+          <input
+            class="form-input"
+            type="password"
+            id="api-key-input"
+            placeholder="sk-..."
+            autocomplete="off"
+          />
+          <p class="form-hint">Your key is stored only in your browser's localStorage and never sent anywhere except OpenAI.</p>
+        </div>
+        <div class="settings-actions">
+          <button class="btn btn-primary" id="btn-save-settings">Save Key</button>
+          <button class="btn btn-danger" id="btn-clear-settings">Clear Key</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MODAL: Badge Detail ===== -->
+  <div class="modal-overlay" id="modal-badge-detail" role="dialog" aria-modal="true" aria-labelledby="detail-title" hidden>
+    <div class="modal-card modal-card--sm">
+      <div class="modal-header">
+        <h2 class="modal-title" id="detail-title">Badge Detail</h2>
+        <button class="modal-close" id="close-badge-detail" aria-label="Close">✕</button>
+      </div>
+      <div class="modal-body detail-body">
+        <div class="detail-img-wrap">
+          <img id="detail-img" src="" alt="" class="detail-img" />
+        </div>
+        <p class="detail-badge-title" id="detail-badge-title"></p>
+        <p class="detail-meta" id="detail-meta"></p>
+        <div class="detail-actions">
+          <a class="btn btn-secondary" id="btn-download-detail" download="badge.png">⬇ Download</a>
+          <button class="btn btn-danger" id="btn-delete-badge">🗑 Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast container (injected by JS) -->
+
+  <script src="app.js"></script>
+</body>
+</html>
