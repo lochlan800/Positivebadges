@@ -217,6 +217,49 @@ body {
   transform: scale(0.98);
 }
 
+.genre-add-btn {
+  width: calc(100% - 2rem);
+  margin: 0 1rem 1.25rem;
+  background: transparent;
+  border: 2px dashed #c0b8e0;
+  border-radius: 16px;
+  padding: 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #6c3fc5;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.genre-add-btn:hover {
+  background: #f3effd;
+  border-color: #6c3fc5;
+}
+
+.genre-add-row {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  padding: 0 1rem 1rem;
+}
+
+.genre-add-input {
+  flex: 1;
+  border: 1.5px solid #d0cce8;
+  border-radius: 8px;
+  padding: 0.65rem 0.9rem;
+  font-size: 1rem;
+  font-family: inherit;
+  outline: none;
+  color: #1a1a2e;
+}
+
+.genre-add-input:focus {
+  border-color: #6c3fc5;
+  box-shadow: 0 0 0 3px rgba(108,63,197,0.15);
+}
+
 .search-divider {
   width: 1px;
   height: 30px;

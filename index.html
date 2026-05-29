@@ -57,14 +57,14 @@
       <span class="genre-picker-title">Choose a Genre</span>
       <button id="genre-picker-close" class="genre-picker-close" aria-label="Close">✕</button>
     </div>
-    <ul class="genre-picker-list">
-      <li><button class="genre-option" data-genre="All" data-label="All Genres">🏅 All Genres</button></li>
-      <li><button class="genre-option" data-genre="Running" data-label="🏃 Running">🏃 Running</button></li>
-      <li><button class="genre-option" data-genre="Skills" data-label="⚡ Skills">⚡ Skills</button></li>
-      <li><button class="genre-option" data-genre="Learning" data-label="📚 Learning">📚 Learning</button></li>
-      <li><button class="genre-option" data-genre="School" data-label="🎓 School">🎓 School</button></li>
-      <li><button class="genre-option" data-genre="Custom" data-label="✨ Custom">✨ Custom</button></li>
+    <ul class="genre-picker-list" id="genre-picker-list">
+      <!-- rendered by JS -->
     </ul>
+    <div class="genre-add-row" id="genre-add-row" style="display:none">
+      <input type="text" id="genre-add-input" class="genre-add-input" placeholder="Genre name…" maxlength="30" />
+      <button id="genre-add-confirm" class="btn btn-primary">Add</button>
+    </div>
+    <button class="genre-add-btn" id="genre-add-btn">＋ Add New Genre</button>
   </div>
 
   <!-- Main content -->
@@ -99,11 +99,7 @@
         <div class="form-group">
           <label class="form-label" for="badge-genre">Genre</label>
           <select class="form-select" id="badge-genre">
-            <option value="Running">Running</option>
-            <option value="Skills">Skills</option>
-            <option value="Learning">Learning</option>
-            <option value="School">School</option>
-            <option value="Custom">Custom</option>
+            <!-- filled by JS -->
           </select>
         </div>
 

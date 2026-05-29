@@ -20,7 +20,11 @@ const genreBtn         = document.getElementById('genre-btn');
 const genreBtnLabel    = document.getElementById('genre-btn-label');
 const genrePicker      = document.getElementById('genre-picker');
 const genrePickerClose = document.getElementById('genre-picker-close');
-const genreOptions     = document.querySelectorAll('.genre-option');
+const genrePickerList  = document.getElementById('genre-picker-list');
+const genreAddBtn      = document.getElementById('genre-add-btn');
+const genreAddRow      = document.getElementById('genre-add-row');
+const genreAddInput    = document.getElementById('genre-add-input');
+const genreAddConfirm  = document.getElementById('genre-add-confirm');
 
 // Search
 const searchInput      = document.getElementById('search-input');
@@ -73,6 +77,64 @@ function saveBadges() {
   } catch (e) {
     showToast('Storage full — try deleting an old badge first.');
   }
+}
+
+// ─── Genre helpers ───────────────────────────────────────
+const DEFAULT_GENRES = [
+  { value: 'Running',  label: '🏃 Running'  },
+  { value: 'Skills',   label: '⚡ Skills'   },
+  { value: 'Learning', label: '📚 Learning' },
+  { value: 'School',   label: '🎓 School'   },
+  { value: 'Custom',   label: '✨ Custom'   },
+];
+
+let customGenres = [];
+
+function loadGenres() {
+  try {
+    customGenres = JSON.parse(localStorage.getItem('positiveGenres') || '[]');
+  } catch(e) { customGenres = []; }
+}
+
+function saveGenres() {
+  localStorage.setItem('positiveGenres', JSON.stringify(customGenres));
+}
+
+function allGenres() {
+  return [...DEFAULT_GENRES, ...customGenres];
+}
+
+function renderGenrePicker() {
+  genrePickerList.innerHTML = '';
+  const all = [{ value: 'All', label: '🏅 All Genres' }, ...allGenres()];
+  all.forEach(g => {
+    const li = document.createElement('li');
+    const btn = document.createElement('button');
+    btn.className = 'genre-option' + (currentGenre === g.value ? ' is-selected' : '');
+    btn.dataset.genre = g.value;
+    btn.dataset.label = g.label;
+    btn.textContent = g.label;
+    btn.addEventListener('click', () => {
+      currentGenre = g.value;
+      genreBtnLabel.textContent = g.label;
+      genrePicker.classList.remove('is-open');
+      genreAddRow.style.display = 'none';
+      renderBadges();
+      renderSuggestions();
+    });
+    li.appendChild(btn);
+    genrePickerList.appendChild(li);
+  });
+}
+
+function renderBadgeGenreSelect() {
+  badgeGenre.innerHTML = '';
+  allGenres().forEach(g => {
+    const opt = document.createElement('option');
+    opt.value = g.value;
+    opt.textContent = g.value;
+    badgeGenre.appendChild(opt);
+  });
 }
 
 function getApiKey() {
@@ -160,24 +222,40 @@ function escapeAttr(str) {
 
 // ─── Genre picker ────────────────────────────────────────
 genreBtn.addEventListener('click', () => {
-  genreOptions.forEach(opt => {
-    opt.classList.toggle('is-selected', opt.dataset.genre === currentGenre);
-  });
+  renderGenrePicker();
   genrePicker.classList.add('is-open');
 });
 
 genrePickerClose.addEventListener('click', () => {
   genrePicker.classList.remove('is-open');
+  genreAddRow.style.display = 'none';
 });
 
-genreOptions.forEach(opt => {
-  opt.addEventListener('click', () => {
-    currentGenre = opt.dataset.genre;
-    genreBtnLabel.textContent = opt.dataset.label;
-    genrePicker.classList.remove('is-open');
-    renderBadges();
-    renderSuggestions();
-  });
+genreAddBtn.addEventListener('click', () => {
+  genreAddRow.style.display = 'flex';
+  genreAddInput.value = '';
+  genreAddInput.focus();
+});
+
+function confirmAddGenre() {
+  const name = genreAddInput.value.trim();
+  if (!name) return;
+  if (allGenres().some(g => g.value.toLowerCase() === name.toLowerCase())) {
+    showToast('That genre already exists.');
+    return;
+  }
+  const genre = { value: name, label: name };
+  customGenres.push(genre);
+  saveGenres();
+  renderGenrePicker();
+  renderBadgeGenreSelect();
+  genreAddRow.style.display = 'none';
+  showToast(`"${name}" genre added!`);
+}
+
+genreAddConfirm.addEventListener('click', confirmAddGenre);
+genreAddInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter') confirmAddGenre();
 });
 
 // ─── Search ──────────────────────────────────────────────
@@ -510,6 +588,8 @@ btnDeleteBadge.addEventListener('click', () => {
 
 // ─── Init ────────────────────────────────────────────────
 (function init() {
+  loadGenres();
+  renderBadgeGenreSelect();
   loadBadges();
   renderBadges();
 })();
