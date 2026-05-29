@@ -132,7 +132,7 @@ body {
 .search-section {
   background: #fff;
   border-bottom: 1px solid #e0dcea;
-  padding: 1rem 1.25rem 0.9rem;
+  padding: 0.75rem 1.25rem;
   position: sticky;
   top: 64px;
   z-index: 99;
@@ -140,8 +140,7 @@ body {
 }
 
 .search-section-inner {
-  max-width: 700px;
-  margin: 0 auto;
+  width: 100%;
 }
 
 .search-bar-wrap {
