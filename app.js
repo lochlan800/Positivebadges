@@ -91,7 +91,8 @@ let customGenres = [];
 
 function loadGenres() {
   try {
-    customGenres = JSON.parse(localStorage.getItem('positiveGenres') || '[]');
+    const parsed = JSON.parse(localStorage.getItem('positiveGenres') || '[]');
+    customGenres = Array.isArray(parsed) ? parsed : [];
   } catch(e) { customGenres = []; }
 }
 
