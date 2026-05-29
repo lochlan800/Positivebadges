@@ -94,29 +94,36 @@ const DEFAULT_GENRES = [
 ];
 
 let customGenres = [];
+let removedDefaults = [];
 
 function loadGenres() {
   try {
     const parsed = JSON.parse(localStorage.getItem('positiveGenres') || '[]');
     customGenres = Array.isArray(parsed) ? parsed : [];
   } catch(e) { customGenres = []; }
+  try {
+    const parsed = JSON.parse(localStorage.getItem('positiveRemovedGenres') || '[]');
+    removedDefaults = Array.isArray(parsed) ? parsed : [];
+  } catch(e) { removedDefaults = []; }
 }
 
 function saveGenres() {
   localStorage.setItem('positiveGenres', JSON.stringify(customGenres));
+  localStorage.setItem('positiveRemovedGenres', JSON.stringify(removedDefaults));
 }
 
 function allGenres() {
-  return [...DEFAULT_GENRES, ...customGenres];
+  const defaults = DEFAULT_GENRES.filter(g => !removedDefaults.includes(g.value));
+  return [...defaults, ...customGenres];
 }
 
 function renderGenrePicker() {
   genrePickerList.innerHTML = '';
   const all = [{ value: 'All', label: '🏅 All Genres' }, ...allGenres()];
   all.forEach(g => {
-    const isCustom = customGenres.some(c => c.value === g.value);
+    const isDeletable = g.value !== 'All';
     const li = document.createElement('li');
-    li.className = isCustom ? 'genre-option-row' : '';
+    li.className = isDeletable ? 'genre-option-row' : '';
 
     const btn = document.createElement('button');
     btn.className = 'genre-option' + (currentGenre === g.value ? ' is-selected' : '');
@@ -133,14 +140,18 @@ function renderGenrePicker() {
     });
     li.appendChild(btn);
 
-    if (isCustom) {
+    if (isDeletable) {
       const del = document.createElement('button');
       del.className = 'genre-delete-btn';
       del.textContent = '🗑';
       del.setAttribute('aria-label', `Delete ${g.label} genre`);
       del.addEventListener('click', () => {
         showConfirm(`Are you sure you want to delete the "${g.value}" genre?`, () => {
-          customGenres = customGenres.filter(c => c.value !== g.value);
+          if (DEFAULT_GENRES.some(d => d.value === g.value)) {
+            removedDefaults.push(g.value);
+          } else {
+            customGenres = customGenres.filter(c => c.value !== g.value);
+          }
           if (currentGenre === g.value) {
             currentGenre = 'All';
             genreBtnLabel.textContent = 'All Genres';
