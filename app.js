@@ -162,18 +162,18 @@ genreBtn.addEventListener('click', () => {
   genreOptions.forEach(opt => {
     opt.classList.toggle('is-selected', opt.dataset.genre === currentGenre);
   });
-  genrePicker.hidden = false;
+  genrePicker.classList.add('is-open');
 });
 
 genrePickerClose.addEventListener('click', () => {
-  genrePicker.hidden = true;
+  genrePicker.classList.remove('is-open');
 });
 
 genreOptions.forEach(opt => {
   opt.addEventListener('click', () => {
     currentGenre = opt.dataset.genre;
     genreBtnLabel.textContent = opt.dataset.label;
-    genrePicker.hidden = true;
+    genrePicker.classList.remove('is-open');
     renderBadges();
     renderSuggestions();
   });
@@ -279,11 +279,11 @@ function compressImage(src, maxDim = 400, quality = 0.82) {
 
 // ─── Modal helpers ───────────────────────────────────────
 function openModal(modal) {
-  modal.hidden = false;
+  modal.classList.add('is-open');
 }
 
 function closeModal(modal) {
-  modal.hidden = true;
+  modal.classList.remove('is-open');
 }
 
 // Close modal on overlay click
@@ -297,7 +297,7 @@ function closeModal(modal) {
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
     [modalAddBadge, modalBadgeDetail].forEach(m => {
-      if (!m.hidden) closeModal(m);
+      if (m.classList.contains('is-open')) closeModal(m);
     });
   }
 });

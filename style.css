@@ -134,17 +134,17 @@ body {
 
 /* ---------- Full-screen genre picker ---------- */
 .genre-picker {
+  display: none;
   position: fixed;
   inset: 0;
   background: #fff;
   z-index: 400;
-  display: flex;
   flex-direction: column;
   animation: fadeIn 0.18s ease;
 }
 
-.genre-picker[hidden] {
-  display: none;
+.genre-picker.is-open {
+  display: flex;
 }
 
 .genre-picker-header {
@@ -478,20 +478,20 @@ body {
    MODALS
    ========================================================= */
 .modal-overlay {
+  display: none;
   position: fixed;
   inset: 0;
   background: rgba(20, 10, 50, 0.55);
   backdrop-filter: blur(3px);
   z-index: 300;
-  display: flex;
   align-items: center;
   justify-content: center;
   padding: 1rem;
   animation: fadeIn 0.18s ease;
 }
 
-.modal-overlay[hidden] {
-  display: none;
+.modal-overlay.is-open {
+  display: flex;
 }
 
 @keyframes fadeIn {
