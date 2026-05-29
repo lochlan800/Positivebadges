@@ -50,6 +50,12 @@ const btnAddToCollection = document.getElementById('btn-add-to-collection');
 // API key (inline in add-badge modal)
 const apiKeyInput      = document.getElementById('api-key-input');
 
+// Confirm modal
+const modalConfirm     = document.getElementById('modal-confirm');
+const confirmMessage   = document.getElementById('confirm-message');
+const btnConfirmYes    = document.getElementById('btn-confirm-yes');
+const btnConfirmNo     = document.getElementById('btn-confirm-no');
+
 // Detail modal
 const modalBadgeDetail = document.getElementById('modal-badge-detail');
 const closeBadgeDetail = document.getElementById('close-badge-detail');
@@ -108,7 +114,10 @@ function renderGenrePicker() {
   genrePickerList.innerHTML = '';
   const all = [{ value: 'All', label: '🏅 All Genres' }, ...allGenres()];
   all.forEach(g => {
+    const isCustom = customGenres.some(c => c.value === g.value);
     const li = document.createElement('li');
+    li.className = isCustom ? 'genre-option-row' : '';
+
     const btn = document.createElement('button');
     btn.className = 'genre-option' + (currentGenre === g.value ? ' is-selected' : '');
     btn.dataset.genre = g.value;
@@ -123,6 +132,29 @@ function renderGenrePicker() {
       renderSuggestions();
     });
     li.appendChild(btn);
+
+    if (isCustom) {
+      const del = document.createElement('button');
+      del.className = 'genre-delete-btn';
+      del.textContent = '🗑';
+      del.setAttribute('aria-label', `Delete ${g.label} genre`);
+      del.addEventListener('click', () => {
+        showConfirm(`Are you sure you want to delete the "${g.value}" genre?`, () => {
+          customGenres = customGenres.filter(c => c.value !== g.value);
+          if (currentGenre === g.value) {
+            currentGenre = 'All';
+            genreBtnLabel.textContent = 'All Genres';
+          }
+          saveGenres();
+          renderGenrePicker();
+          renderBadgeGenreSelect();
+          renderBadges();
+          showToast(`"${g.value}" genre deleted.`);
+        });
+      });
+      li.appendChild(del);
+    }
+
     genrePickerList.appendChild(li);
   });
 
@@ -372,8 +404,28 @@ function closeModal(modal) {
   modal.classList.remove('is-open');
 }
 
+// ─── Confirm modal ───────────────────────────────────────
+let confirmCallback = null;
+
+function showConfirm(message, onYes) {
+  confirmMessage.textContent = message;
+  confirmCallback = onYes;
+  modalConfirm.classList.add('is-open');
+}
+
+btnConfirmYes.addEventListener('click', () => {
+  modalConfirm.classList.remove('is-open');
+  if (confirmCallback) confirmCallback();
+  confirmCallback = null;
+});
+
+btnConfirmNo.addEventListener('click', () => {
+  modalConfirm.classList.remove('is-open');
+  confirmCallback = null;
+});
+
 // Close modal on overlay click
-[modalAddBadge, modalBadgeDetail].forEach(modal => {
+[modalAddBadge, modalBadgeDetail, modalConfirm].forEach(modal => {
   modal.addEventListener('click', e => {
     if (e.target === modal) closeModal(modal);
   });
@@ -382,7 +434,7 @@ function closeModal(modal) {
 // Close on Escape
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
-    [modalAddBadge, modalBadgeDetail].forEach(m => {
+    [modalAddBadge, modalBadgeDetail, modalConfirm].forEach(m => {
       if (m.classList.contains('is-open')) closeModal(m);
     });
   }
@@ -580,17 +632,16 @@ btnShareBadge.addEventListener('click', async () => {
 
 btnDeleteBadge.addEventListener('click', () => {
   if (activeBadgeId === null) return;
-
   const badge = badges.find(b => b.id === activeBadgeId);
   const title = badge ? badge.title : 'Badge';
-
-  badges = badges.filter(b => b.id !== activeBadgeId);
-  saveBadges();
-  renderBadges();
-
-  closeModal(modalBadgeDetail);
-  showToast(`"${title}" deleted.`);
-  activeBadgeId = null;
+  showConfirm(`Are you sure you want to delete "${title}"?`, () => {
+    badges = badges.filter(b => b.id !== activeBadgeId);
+    saveBadges();
+    renderBadges();
+    closeModal(modalBadgeDetail);
+    showToast(`"${title}" deleted.`);
+    activeBadgeId = null;
+  });
 });
 
 // ─── Init ────────────────────────────────────────────────

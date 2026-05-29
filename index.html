@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Positive Badges</title>
-  <link rel="stylesheet" href="style.css?v=7" />
+  <link rel="stylesheet" href="style.css?v=8" />
 </head>
 <body>
 
@@ -201,6 +201,19 @@
     </div>
   </div>
 
-  <script src="app.js?v=7"></script>
+  <!-- ===== MODAL: Confirm ===== -->
+  <div class="modal-overlay" id="modal-confirm" role="alertdialog" aria-modal="true" aria-labelledby="confirm-message">
+    <div class="modal-card modal-card--sm">
+      <div class="modal-body" style="text-align:center;gap:1.25rem">
+        <p class="confirm-message" id="confirm-message"></p>
+        <div class="confirm-actions">
+          <button class="btn btn-secondary" id="btn-confirm-no">Cancel</button>
+          <button class="btn btn-danger" id="btn-confirm-yes">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js?v=8"></script>
 </body>
 </html>

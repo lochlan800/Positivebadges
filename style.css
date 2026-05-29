@@ -229,6 +229,51 @@ body {
   border-style: solid;
 }
 
+/* Genre row with delete button */
+.genre-option-row {
+  display: flex;
+  gap: 0.5rem;
+  align-items: stretch;
+}
+
+.genre-option-row .genre-option {
+  flex: 1;
+}
+
+.genre-delete-btn {
+  flex-shrink: 0;
+  width: 52px;
+  background: #fff0f0;
+  border: 2px solid #fca5a5;
+  border-radius: 16px;
+  color: #e53e3e;
+  font-size: 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.genre-delete-btn:hover {
+  background: #fee2e2;
+  border-color: #e53e3e;
+}
+
+/* Confirm modal */
+.confirm-message {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #1a1a2e;
+  line-height: 1.5;
+}
+
+.confirm-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+}
+
 .genre-add-row {
   display: flex;
   gap: 0.6rem;
