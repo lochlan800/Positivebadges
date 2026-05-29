@@ -17,8 +17,14 @@ const emptyState       = document.getElementById('empty-state');
 const hintBanner       = document.getElementById('hint-banner');
 const hintDismiss      = document.getElementById('hint-dismiss');
 
-// Genre select + search
-const genreSelect      = document.getElementById('genre-select');
+// Genre picker
+const genreBtn         = document.getElementById('genre-btn');
+const genreBtnLabel    = document.getElementById('genre-btn-label');
+const genrePicker      = document.getElementById('genre-picker');
+const genrePickerClose = document.getElementById('genre-picker-close');
+const genreOptions     = document.querySelectorAll('.genre-option');
+
+// Search
 const searchInput      = document.getElementById('search-input');
 const searchSuggestions = document.getElementById('search-suggestions');
 
@@ -154,11 +160,26 @@ function escapeAttr(str) {
   return String(str).replace(/"/g, '&quot;');
 }
 
-// ─── Genre select ────────────────────────────────────────
-genreSelect.addEventListener('change', () => {
-  currentGenre = genreSelect.value;
-  renderBadges();
-  renderSuggestions();
+// ─── Genre picker ────────────────────────────────────────
+genreBtn.addEventListener('click', () => {
+  genreOptions.forEach(opt => {
+    opt.classList.toggle('is-selected', opt.dataset.genre === currentGenre);
+  });
+  genrePicker.hidden = false;
+});
+
+genrePickerClose.addEventListener('click', () => {
+  genrePicker.hidden = true;
+});
+
+genreOptions.forEach(opt => {
+  opt.addEventListener('click', () => {
+    currentGenre = opt.dataset.genre;
+    genreBtnLabel.textContent = opt.dataset.label;
+    genrePicker.hidden = true;
+    renderBadges();
+    renderSuggestions();
+  });
 });
 
 // ─── Search ──────────────────────────────────────────────

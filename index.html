@@ -42,14 +42,13 @@
   <section class="search-section">
     <div class="search-section-inner">
       <div class="search-bar-wrap">
-        <select id="genre-select" class="search-genre-select" aria-label="Filter by genre">
-          <option value="All">All Genres</option>
-          <option value="Running">🏃 Running</option>
-          <option value="Skills">⚡ Skills</option>
-          <option value="Learning">📚 Learning</option>
-          <option value="School">🎓 School</option>
-          <option value="Custom">✨ Custom</option>
-        </select>
+        <button id="genre-btn" class="search-genre-btn" aria-label="Filter by genre">
+          <span id="genre-btn-label">All Genres</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
         <div class="search-divider"></div>
         <svg class="search-icon-lg" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
           fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -71,6 +70,22 @@
       <ul id="search-suggestions" class="search-suggestions" role="listbox" hidden></ul>
     </div>
   </section>
+
+  <!-- Full-screen genre picker -->
+  <div id="genre-picker" class="genre-picker" hidden>
+    <div class="genre-picker-header">
+      <span class="genre-picker-title">Choose a Genre</span>
+      <button id="genre-picker-close" class="genre-picker-close" aria-label="Close">✕</button>
+    </div>
+    <ul class="genre-picker-list">
+      <li><button class="genre-option" data-genre="All" data-label="All Genres">🏅 All Genres</button></li>
+      <li><button class="genre-option" data-genre="Running" data-label="🏃 Running">🏃 Running</button></li>
+      <li><button class="genre-option" data-genre="Skills" data-label="⚡ Skills">⚡ Skills</button></li>
+      <li><button class="genre-option" data-genre="Learning" data-label="📚 Learning">📚 Learning</button></li>
+      <li><button class="genre-option" data-genre="School" data-label="🎓 School">🎓 School</button></li>
+      <li><button class="genre-option" data-genre="Custom" data-label="✨ Custom">✨ Custom</button></li>
+    </ul>
+  </div>
 
   <!-- Main content -->
   <main class="main-content">
