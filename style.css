@@ -217,24 +217,16 @@ body {
   transform: scale(0.98);
 }
 
-.genre-add-btn {
-  width: calc(100% - 2rem);
-  margin: 0 1rem 1.25rem;
+.genre-option--add {
   background: transparent;
   border: 2px dashed #c0b8e0;
-  border-radius: 16px;
-  padding: 1rem;
-  font-size: 1rem;
-  font-weight: 600;
   color: #6c3fc5;
-  cursor: pointer;
-  font-family: inherit;
-  transition: background 0.15s, border-color 0.15s;
 }
 
-.genre-add-btn:hover {
+.genre-option--add:hover {
   background: #f3effd;
   border-color: #6c3fc5;
+  border-style: solid;
 }
 
 .genre-add-row {

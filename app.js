@@ -21,7 +21,6 @@ const genreBtnLabel    = document.getElementById('genre-btn-label');
 const genrePicker      = document.getElementById('genre-picker');
 const genrePickerClose = document.getElementById('genre-picker-close');
 const genrePickerList  = document.getElementById('genre-picker-list');
-const genreAddBtn      = document.getElementById('genre-add-btn');
 const genreAddRow      = document.getElementById('genre-add-row');
 const genreAddInput    = document.getElementById('genre-add-input');
 const genreAddConfirm  = document.getElementById('genre-add-confirm');
@@ -125,6 +124,19 @@ function renderGenrePicker() {
     li.appendChild(btn);
     genrePickerList.appendChild(li);
   });
+
+  // "Add New Genre" as a matching list item
+  const addLi = document.createElement('li');
+  const addBtn = document.createElement('button');
+  addBtn.className = 'genre-option genre-option--add';
+  addBtn.textContent = '＋ Add New Genre';
+  addBtn.addEventListener('click', () => {
+    genreAddRow.style.display = 'flex';
+    genreAddInput.value = '';
+    genreAddInput.focus();
+  });
+  addLi.appendChild(addBtn);
+  genrePickerList.appendChild(addLi);
 }
 
 function renderBadgeGenreSelect() {
@@ -229,12 +241,6 @@ genreBtn.addEventListener('click', () => {
 genrePickerClose.addEventListener('click', () => {
   genrePicker.classList.remove('is-open');
   genreAddRow.style.display = 'none';
-});
-
-genreAddBtn.addEventListener('click', () => {
-  genreAddRow.style.display = 'flex';
-  genreAddInput.value = '';
-  genreAddInput.focus();
 });
 
 function confirmAddGenre() {
@@ -589,6 +595,7 @@ btnDeleteBadge.addEventListener('click', () => {
 // ─── Init ────────────────────────────────────────────────
 (function init() {
   loadGenres();
+  renderGenrePicker();
   renderBadgeGenreSelect();
   loadBadges();
   renderBadges();
