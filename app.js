@@ -17,8 +17,8 @@ const emptyState       = document.getElementById('empty-state');
 const hintBanner       = document.getElementById('hint-banner');
 const hintDismiss      = document.getElementById('hint-dismiss');
 
-// Genre chips
-const genreBtns        = document.querySelectorAll('.genre-chip');
+// Genre select + search
+const genreSelect      = document.getElementById('genre-select');
 const searchInput      = document.getElementById('search-input');
 
 // FAB
@@ -153,14 +153,10 @@ function escapeAttr(str) {
   return String(str).replace(/"/g, '&quot;');
 }
 
-// ─── Genre nav ───────────────────────────────────────────
-genreBtns.forEach(btn => {
-  btn.addEventListener('click', () => {
-    genreBtns.forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    currentGenre = btn.dataset.genre;
-    renderBadges();
-  });
+// ─── Genre select ────────────────────────────────────────
+genreSelect.addEventListener('change', () => {
+  currentGenre = genreSelect.value;
+  renderBadges();
 });
 
 // ─── Search ──────────────────────────────────────────────

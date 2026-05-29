@@ -38,11 +38,20 @@
     <button class="hint-dismiss" id="hint-dismiss" aria-label="Dismiss">✕</button>
   </div>
 
-  <!-- Search + genre filter -->
+  <!-- Search bar with built-in genre filter -->
   <section class="search-section">
     <div class="search-section-inner">
       <div class="search-bar-wrap">
-        <svg class="search-icon-lg" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+        <select id="genre-select" class="search-genre-select" aria-label="Filter by genre">
+          <option value="All">All Genres</option>
+          <option value="Running">🏃 Running</option>
+          <option value="Skills">⚡ Skills</option>
+          <option value="Learning">📚 Learning</option>
+          <option value="School">🎓 School</option>
+          <option value="Custom">✨ Custom</option>
+        </select>
+        <div class="search-divider"></div>
+        <svg class="search-icon-lg" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
           fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="11" cy="11" r="8"></circle>
           <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
@@ -55,14 +64,6 @@
           aria-label="Search badges"
           autocomplete="off"
         />
-      </div>
-      <div class="genre-chips" role="group" aria-label="Filter by genre">
-        <button class="genre-chip active" data-genre="All">All</button>
-        <button class="genre-chip" data-genre="Running">🏃 Running</button>
-        <button class="genre-chip" data-genre="Skills">⚡ Skills</button>
-        <button class="genre-chip" data-genre="Learning">📚 Learning</button>
-        <button class="genre-chip" data-genre="School">🎓 School</button>
-        <button class="genre-chip" data-genre="Custom">✨ Custom</button>
       </div>
     </div>
   </section>
