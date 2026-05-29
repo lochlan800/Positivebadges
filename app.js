@@ -203,19 +203,18 @@ function hideSuggestions() {
 }
 
 function renderSuggestions() {
-  // Only show the dropdown once the user has typed something
-  if (!currentSearch) {
-    hideSuggestions();
-    return;
-  }
-
   const results = matchingBadges();
   searchSuggestions.innerHTML = '';
 
-  if (results.length === 0) {
+  if (badges.length === 0) {
     const li = document.createElement('li');
     li.className = 'search-suggestion-empty';
-    li.textContent = `No badges match "${currentSearch}"`;
+    li.textContent = 'No badges yet — press + to add your first one!';
+    searchSuggestions.appendChild(li);
+  } else if (results.length === 0) {
+    const li = document.createElement('li');
+    li.className = 'search-suggestion-empty';
+    li.textContent = `No badges match "${escapeHTML(currentSearch)}"`;
     searchSuggestions.appendChild(li);
   } else {
     results.forEach(badge => {
@@ -229,7 +228,8 @@ function renderSuggestions() {
           <div class="search-suggestion-genre">${escapeHTML(badge.genre)}</div>
         </div>
       `;
-      li.addEventListener('click', () => {
+      li.addEventListener('mousedown', e => {
+        e.preventDefault(); // prevent input blur before click fires
         hideSuggestions();
         openDetailModal(badge.id);
       });
