@@ -67,7 +67,11 @@ function loadBadges() {
 }
 
 function saveBadges() {
-  localStorage.setItem('positiveBadges', JSON.stringify(badges));
+  try {
+    localStorage.setItem('positiveBadges', JSON.stringify(badges));
+  } catch (e) {
+    showToast('Storage full — try deleting an old badge first.');
+  }
 }
 
 function getApiKey() {
@@ -255,12 +259,27 @@ function renderSuggestions() {
   searchInput.setAttribute('aria-expanded', 'true');
 }
 
+// ─── Image compression ───────────────────────────────────
+function compressImage(src, maxDim = 400, quality = 0.82) {
+  return new Promise(resolve => {
+    const img = new Image();
+    img.onload = () => {
+      const scale = Math.min(1, maxDim / Math.max(img.width, img.height));
+      const w = Math.round(img.width * scale);
+      const h = Math.round(img.height * scale);
+      const canvas = document.createElement('canvas');
+      canvas.width = w;
+      canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      resolve(canvas.toDataURL('image/jpeg', quality));
+    };
+    img.src = src;
+  });
+}
+
 // ─── Modal helpers ───────────────────────────────────────
 function openModal(modal) {
   modal.hidden = false;
-  // Trap focus on the first focusable element
-  const firstFocusable = modal.querySelector('button, input, select, textarea, a[href]');
-  if (firstFocusable) firstFocusable.focus();
 }
 
 function closeModal(modal) {
@@ -328,7 +347,7 @@ btnGenerate.addEventListener('click', async () => {
   }
 
   if (!apiKey) {
-    showToast('Add your OpenAI API key in Settings first.');
+    showToast('Enter your OpenAI API key above to generate with AI.');
     return;
   }
 
@@ -364,10 +383,10 @@ btnGenerate.addEventListener('click', async () => {
     }
 
     const data = await response.json();
-    const b64 = data.data[0].b64_json;
-    const src = `data:image/png;base64,${b64}`;
+    const src = `data:image/png;base64,${data.data[0].b64_json}`;
+    const compressed = await compressImage(src);
 
-    showPreview(src);
+    showPreview(compressed);
     showToast('Badge generated! Preview below.');
 
   } catch (err) {
@@ -384,8 +403,9 @@ badgeUpload.addEventListener('change', () => {
   if (!file) return;
 
   const reader = new FileReader();
-  reader.onload = e => {
-    showPreview(e.target.result);
+  reader.onload = async e => {
+    const compressed = await compressImage(e.target.result);
+    showPreview(compressed);
     showToast('Image uploaded! Preview below.');
   };
   reader.readAsDataURL(file);
