@@ -38,32 +38,34 @@
     <button class="hint-dismiss" id="hint-dismiss" aria-label="Dismiss">✕</button>
   </div>
 
-  <!-- Genre navigation -->
-  <nav class="genre-nav" aria-label="Badge genres">
-    <div class="genre-nav-inner">
-      <button class="genre-btn active" data-genre="All">All</button>
-      <button class="genre-btn" data-genre="Running">🏃 Running</button>
-      <button class="genre-btn" data-genre="Skills">⚡ Skills</button>
-      <button class="genre-btn" data-genre="Learning">📚 Learning</button>
-      <button class="genre-btn" data-genre="School">🎓 School</button>
-      <button class="genre-btn" data-genre="Custom">✨ Custom</button>
+  <!-- Search + genre filter -->
+  <section class="search-section">
+    <div class="search-section-inner">
+      <div class="search-bar-wrap">
+        <svg class="search-icon-lg" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input
+          type="search"
+          id="search-input"
+          class="search-input-lg"
+          placeholder="Search your badges…"
+          aria-label="Search badges"
+          autocomplete="off"
+        />
+      </div>
+      <div class="genre-chips" role="group" aria-label="Filter by genre">
+        <button class="genre-chip active" data-genre="All">All</button>
+        <button class="genre-chip" data-genre="Running">🏃 Running</button>
+        <button class="genre-chip" data-genre="Skills">⚡ Skills</button>
+        <button class="genre-chip" data-genre="Learning">📚 Learning</button>
+        <button class="genre-chip" data-genre="School">🎓 School</button>
+        <button class="genre-chip" data-genre="Custom">✨ Custom</button>
+      </div>
     </div>
-    <div class="search-wrap">
-      <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-        fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="11" cy="11" r="8"></circle>
-        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-      </svg>
-      <input
-        type="search"
-        id="search-input"
-        class="search-input"
-        placeholder="Search badges…"
-        aria-label="Search badges"
-        autocomplete="off"
-      />
-    </div>
-  </nav>
+  </section>
 
   <!-- Main content -->
   <main class="main-content">

@@ -17,8 +17,8 @@ const emptyState       = document.getElementById('empty-state');
 const hintBanner       = document.getElementById('hint-banner');
 const hintDismiss      = document.getElementById('hint-dismiss');
 
-// Genre nav
-const genreBtns        = document.querySelectorAll('.genre-btn');
+// Genre chips
+const genreBtns        = document.querySelectorAll('.genre-chip');
 const searchInput      = document.getElementById('search-input');
 
 // FAB
