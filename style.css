@@ -655,6 +655,16 @@ body {
   background: #ede8fb;
 }
 
+.btn-share {
+  background: #16a34a;
+  color: #fff;
+  box-shadow: 0 2px 8px rgba(22, 163, 74, 0.28);
+}
+
+.btn-share:hover {
+  background: #15803d;
+}
+
 .btn-danger {
   background: #e53e3e;
   color: #fff;

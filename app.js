@@ -53,7 +53,8 @@ const closeBadgeDetail = document.getElementById('close-badge-detail');
 const detailImg        = document.getElementById('detail-img');
 const detailBadgeTitle = document.getElementById('detail-badge-title');
 const detailMeta       = document.getElementById('detail-meta');
-const btnDownloadDetail = document.getElementById('btn-download-detail');
+const btnPrintBadge    = document.getElementById('btn-print-badge');
+const btnShareBadge    = document.getElementById('btn-share-badge');
 const btnDeleteBadge   = document.getElementById('btn-delete-badge');
 
 // ─── localStorage helpers ────────────────────────────────
@@ -462,11 +463,35 @@ function openDetailModal(id) {
   detailImg.alt = badge.title;
   detailBadgeTitle.textContent = badge.title;
   detailMeta.textContent = `${badge.genre} · Earned ${badge.date}`;
-  btnDownloadDetail.href = badge.src;
-  btnDownloadDetail.download = `${badge.title.replace(/[^a-z0-9]/gi, '_')}.png`;
-
   openModal(modalBadgeDetail);
 }
+
+btnPrintBadge.addEventListener('click', () => {
+  const badge = badges.find(b => b.id === activeBadgeId);
+  if (!badge) return;
+  const win = window.open('', '_blank');
+  win.document.write(`<!DOCTYPE html><html><head><title>${badge.title}</title><style>*{margin:0;padding:0}body{display:flex;align-items:center;justify-content:center;min-height:100vh;background:#fff}img{max-width:90vmin;max-height:90vmin}</style></head><body><img src="${badge.src}" onload="window.print();window.close();" /></body></html>`);
+  win.document.close();
+});
+
+btnShareBadge.addEventListener('click', async () => {
+  const badge = badges.find(b => b.id === activeBadgeId);
+  if (!badge) return;
+  try {
+    const res = await fetch(badge.src);
+    const blob = await res.blob();
+    const file = new File([blob], `${badge.title}.jpg`, { type: 'image/jpeg' });
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      await navigator.share({ title: badge.title, text: `My badge: ${badge.title}`, files: [file] });
+    } else if (navigator.share) {
+      await navigator.share({ title: badge.title, text: `My badge: ${badge.title}` });
+    } else {
+      showToast('Sharing not supported on this browser.');
+    }
+  } catch (err) {
+    if (err.name !== 'AbortError') showToast('Could not share — try saving the image first.');
+  }
+});
 
 btnDeleteBadge.addEventListener('click', () => {
   if (activeBadgeId === null) return;
