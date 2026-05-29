@@ -146,6 +146,45 @@ body {
   flex-wrap: wrap;
 }
 
+.search-wrap {
+  max-width: 1100px;
+  margin: 0.55rem auto 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 0.75rem;
+  color: #9080c0;
+  pointer-events: none;
+  flex-shrink: 0;
+}
+
+.search-input {
+  width: 100%;
+  border: 1.5px solid #d0cce8;
+  border-radius: 999px;
+  padding: 0.45rem 0.9rem 0.45rem 2.3rem;
+  font-size: 0.875rem;
+  color: #1a1a2e;
+  background: #fafafa;
+  outline: none;
+  font-family: inherit;
+  transition: border-color 0.18s, box-shadow 0.18s;
+}
+
+.search-input:focus {
+  border-color: #6c3fc5;
+  box-shadow: 0 0 0 3px rgba(108, 63, 197, 0.15);
+  background: #fff;
+}
+
+.search-input::-webkit-search-cancel-button {
+  cursor: pointer;
+}
+
 .genre-btn {
   background: transparent;
   border: 1.5px solid #6c3fc5;

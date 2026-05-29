@@ -7,6 +7,7 @@
 // ─── State ────────────────────────────────────────────────
 let badges = [];
 let currentGenre = 'All';
+let currentSearch = '';
 let pendingImageSrc = null;  // base64 data URL of the image waiting to be saved
 let activeBadgeId = null;    // id of the badge currently shown in the detail modal
 
@@ -18,6 +19,7 @@ const hintDismiss      = document.getElementById('hint-dismiss');
 
 // Genre nav
 const genreBtns        = document.querySelectorAll('.genre-btn');
+const searchInput      = document.getElementById('search-input');
 
 // FAB
 const fabAddBadge      = document.getElementById('fab-add-badge');
@@ -98,14 +100,22 @@ function showToast(msg) {
 
 // ─── Render ──────────────────────────────────────────────
 function renderBadges() {
-  const filtered = currentGenre === 'All'
-    ? badges
-    : badges.filter(b => b.genre === currentGenre);
+  const term = currentSearch.toLowerCase();
+  const filtered = badges.filter(b => {
+    const matchesGenre = currentGenre === 'All' || b.genre === currentGenre;
+    const matchesSearch = !term ||
+      b.title.toLowerCase().includes(term) ||
+      b.genre.toLowerCase().includes(term);
+    return matchesGenre && matchesSearch;
+  });
 
   badgeGrid.innerHTML = '';
 
   if (filtered.length === 0) {
     emptyState.hidden = false;
+    emptyState.querySelector('.empty-sub').innerHTML = term
+      ? `No badges match "<strong>${escapeHTML(term)}</strong>"`
+      : 'Press the <strong>+</strong> button to add your first achievement!';
     return;
   }
 
@@ -151,6 +161,12 @@ genreBtns.forEach(btn => {
     currentGenre = btn.dataset.genre;
     renderBadges();
   });
+});
+
+// ─── Search ──────────────────────────────────────────────
+searchInput.addEventListener('input', () => {
+  currentSearch = searchInput.value.trim();
+  renderBadges();
 });
 
 // ─── Modal helpers ───────────────────────────────────────
