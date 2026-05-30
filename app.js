@@ -62,12 +62,12 @@ const btnOpenNotes     = document.getElementById('btn-open-notes');
 const closeNotes       = document.getElementById('close-notes');
 const notesTextarea    = document.getElementById('notes-textarea');
 
-// Detail modal
-const modalBadgeDetail = document.getElementById('modal-badge-detail');
-const closeBadgeDetail = document.getElementById('close-badge-detail');
-const detailImg        = document.getElementById('detail-img');
-const detailBadgeTitle = document.getElementById('detail-badge-title');
-const detailMeta       = document.getElementById('detail-meta');
+// Badge full-screen viewer
+const badgeViewer      = document.getElementById('badge-viewer');
+const viewerBackBtn    = document.getElementById('viewer-back-btn');
+const viewerImg        = document.getElementById('viewer-img');
+const viewerTitle      = document.getElementById('viewer-title');
+const viewerMeta       = document.getElementById('viewer-meta');
 const btnPrintBadge    = document.getElementById('btn-print-badge');
 const btnShareBadge    = document.getElementById('btn-share-badge');
 const btnDeleteBadge   = document.getElementById('btn-delete-badge');
@@ -445,7 +445,7 @@ btnConfirmNo.addEventListener('click', () => {
 });
 
 // Close modal on overlay click
-[modalAddBadge, modalBadgeDetail, modalConfirm].forEach(modal => {
+[modalAddBadge, modalConfirm].forEach(modal => {
   modal.addEventListener('click', e => {
     if (e.target === modal) closeModal(modal);
   });
@@ -454,9 +454,10 @@ btnConfirmNo.addEventListener('click', () => {
 // Close on Escape
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
-    [modalAddBadge, modalBadgeDetail, modalConfirm].forEach(m => {
+    [modalAddBadge, modalConfirm].forEach(m => {
       if (m.classList.contains('is-open')) closeModal(m);
     });
+    if (badgeViewer.classList.contains('is-open')) closeViewer();
   }
 });
 
@@ -608,20 +609,23 @@ btnAddToCollection.addEventListener('click', () => {
 });
 
 
-// ─── Badge Detail modal ──────────────────────────────────
-closeBadgeDetail.addEventListener('click', () => closeModal(modalBadgeDetail));
-
+// ─── Badge full-screen viewer ────────────────────────────
 function openDetailModal(id) {
   const badge = badges.find(b => b.id === id);
   if (!badge) return;
-
   activeBadgeId = id;
-  detailImg.src = badge.src;
-  detailImg.alt = badge.title;
-  detailBadgeTitle.textContent = badge.title;
-  detailMeta.textContent = `${badge.genre} · Earned ${badge.date}`;
-  openModal(modalBadgeDetail);
+  viewerImg.src = badge.src;
+  viewerImg.alt = badge.title;
+  viewerTitle.textContent = badge.title;
+  viewerMeta.textContent = `${badge.genre} · Earned ${badge.date}`;
+  badgeViewer.classList.add('is-open');
 }
+
+function closeViewer() {
+  badgeViewer.classList.remove('is-open');
+}
+
+viewerBackBtn.addEventListener('click', closeViewer);
 
 btnPrintBadge.addEventListener('click', () => {
   const badge = badges.find(b => b.id === activeBadgeId);
@@ -658,7 +662,7 @@ btnDeleteBadge.addEventListener('click', () => {
     badges = badges.filter(b => b.id !== activeBadgeId);
     saveBadges();
     renderBadges();
-    closeModal(modalBadgeDetail);
+    closeViewer();
     showToast(`"${title}" deleted.`);
     activeBadgeId = null;
   });

@@ -862,48 +862,115 @@ body {
 }
 
 /* =========================================================
-   DETAIL MODAL
+   BADGE FULL-SCREEN VIEWER
    ========================================================= */
-.detail-body {
+.badge-viewer {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 600;
+  background: #000;
+  flex-direction: column;
+}
+
+.badge-viewer.is-open {
+  display: flex;
+}
+
+.viewer-back-btn {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  z-index: 10;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,0.18);
+  color: #fff;
+  display: flex;
   align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: background 0.15s;
+}
+
+.viewer-back-btn:hover,
+.viewer-back-btn:active {
+  background: rgba(255,255,255,0.32);
+}
+
+.viewer-img-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 1.5rem 0;
+  min-height: 0;
+}
+
+.viewer-img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 18px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+}
+
+.viewer-footer {
+  padding: 1rem 1.5rem 2rem;
   text-align: center;
 }
 
-.detail-img-wrap {
-  width: 200px;
-  height: 200px;
-  border-radius: 14px;
-  overflow: hidden;
-  border: 2px solid #e0dcea;
-  background: #f4f4f8;
-  margin: 0 auto;
-}
-
-.detail-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.detail-badge-title {
-  font-size: 1.05rem;
+.viewer-title {
+  color: #fff;
+  font-size: 1.15rem;
   font-weight: 700;
-  color: #1a1a2e;
-  margin-top: 0.25rem;
+  margin: 0 0 0.2rem;
 }
 
-.detail-meta {
-  font-size: 0.82rem;
-  color: #8888aa;
+.viewer-meta {
+  color: rgba(255,255,255,0.55);
+  font-size: 0.85rem;
+  margin: 0 0 1.1rem;
 }
 
-.detail-actions {
+.viewer-actions {
   display: flex;
-  gap: 0.75rem;
-  flex-wrap: wrap;
   justify-content: center;
-  margin-top: 0.25rem;
+  gap: 1.5rem;
+}
+
+.viewer-action-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  background: rgba(255,255,255,0.12);
+  border: none;
+  border-radius: 14px;
+  color: #fff;
+  padding: 0.7rem 1.2rem;
+  font-size: 0.78rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s;
+  min-width: 64px;
+}
+
+.viewer-action-btn:hover,
+.viewer-action-btn:active {
+  background: rgba(255,255,255,0.22);
+}
+
+.viewer-action-share {
+  color: #4ade80;
+}
+
+.viewer-action-delete {
+  color: #f87171;
 }
 
 /* =========================================================
