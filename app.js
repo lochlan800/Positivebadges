@@ -120,7 +120,10 @@ function saveGenres() {
 
 function allGenres() {
   const defaults = DEFAULT_GENRES.filter(g => !removedDefaults.includes(g.value));
-  return [...defaults, ...customGenres];
+  const genres = [...defaults, ...customGenres];
+  const counts = {};
+  badges.forEach(b => { counts[b.genre] = (counts[b.genre] || 0) + 1; });
+  return genres.sort((a, b) => (counts[b.value] || 0) - (counts[a.value] || 0));
 }
 
 function renderGenrePicker() {
