@@ -56,6 +56,12 @@ const confirmMessage   = document.getElementById('confirm-message');
 const btnConfirmYes    = document.getElementById('btn-confirm-yes');
 const btnConfirmNo     = document.getElementById('btn-confirm-no');
 
+// Notes modal
+const modalNotes       = document.getElementById('modal-notes');
+const btnOpenNotes     = document.getElementById('btn-open-notes');
+const closeNotes       = document.getElementById('close-notes');
+const notesTextarea    = document.getElementById('notes-textarea');
+
 // Detail modal
 const modalBadgeDetail = document.getElementById('modal-badge-detail');
 const closeBadgeDetail = document.getElementById('close-badge-detail');
@@ -656,6 +662,23 @@ btnDeleteBadge.addEventListener('click', () => {
 });
 
 // ─── Init ────────────────────────────────────────────────
+// ─── Notes ───────────────────────────────────────────────
+btnOpenNotes.addEventListener('click', () => {
+  notesTextarea.value = localStorage.getItem('positiveNotes') || '';
+  openModal(modalNotes);
+  notesTextarea.focus();
+});
+
+closeNotes.addEventListener('click', () => closeModal(modalNotes));
+
+modalNotes.addEventListener('click', e => {
+  if (e.target === modalNotes) closeModal(modalNotes);
+});
+
+notesTextarea.addEventListener('input', () => {
+  localStorage.setItem('positiveNotes', notesTextarea.value);
+});
+
 (function init() {
   loadGenres();
   renderGenrePicker();

@@ -970,3 +970,70 @@ body {
   from { opacity: 1; transform: translateX(-50%) translateY(0);    }
   to   { opacity: 0; transform: translateX(-50%) translateY(20px); }
 }
+
+/* =========================================================
+   HEADER NOTES BUTTON
+   ========================================================= */
+.header-notes-btn {
+  background: rgba(255,255,255,0.18);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+
+.header-notes-btn:hover,
+.header-notes-btn:active {
+  background: rgba(255,255,255,0.32);
+}
+
+/* =========================================================
+   NOTES MODAL
+   ========================================================= */
+.modal-card--notes {
+  display: flex;
+  flex-direction: column;
+  height: 80vh;
+  max-height: 680px;
+}
+
+.notes-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 0.5rem;
+  overflow: hidden;
+}
+
+.notes-hint {
+  font-size: 0.88rem;
+  color: #7c6faa;
+  margin: 0;
+}
+
+.notes-textarea {
+  flex: 1;
+  width: 100%;
+  border: 2px solid #ddd3f5;
+  border-radius: 14px;
+  padding: 0.9rem 1rem;
+  font-size: 1rem;
+  font-family: inherit;
+  line-height: 1.6;
+  color: #1a1340;
+  resize: none;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.15s;
+}
+
+.notes-textarea:focus {
+  border-color: #6c3fc5;
+}
